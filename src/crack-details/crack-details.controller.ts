@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { CrackDetailsService } from './crack-details.service';
 import { CreateCrackDetailDto } from './dto/create-crack-detail.dto';
 import { UpdateCrackDetailDto } from './dto/update-crack-detail.dto';
@@ -23,7 +31,10 @@ export class CrackDetailsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCrackDetailDto: UpdateCrackDetailDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateCrackDetailDto: UpdateCrackDetailDto,
+  ) {
     return this.crackDetailsService.update(+id, updateCrackDetailDto);
   }
 
