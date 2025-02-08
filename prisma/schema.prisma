@@ -14,7 +14,7 @@ datasource db {
 }
 
 model User {
-  userId      Int       @id @default(autoincrement())
+  userId      String    @id @default(uuid())
   username    String    @unique
   password    String
   email       String    @unique
@@ -27,19 +27,19 @@ model User {
 }
 
 model Resident {
-  residentId      Int        @id @default(autoincrement())
-  userId          Int        @unique
+  residentId      String     @id @default(uuid())
+  userId          String     @unique
   apartmentNumber String?
-  buildingId      Int
+  buildingId      String
   feedbacks       Feedback[]
   user            User       @relation(fields: [userId], references: [userId])
 }
 
 model Employee {
-  employeeId      Int              @id @default(autoincrement())
-  userId          Int              @unique
-  positionId      Int
-  departmentId    Int
+  employeeId      String           @id @default(uuid())
+  userId          String           @unique
+  positionId      String
+  departmentId    String
   status          EmploymentStatus
   taskAssignments TaskAssignment[]
   inspections     Inspection[]
@@ -49,9 +49,9 @@ model Employee {
 }
 
 model Feedback {
-  feedbackId Int      @id @default(autoincrement())
-  taskId     Int      @unique
-  feedbackBy Int
+  feedbackId String   @id @default(uuid())
+  taskId     String   @unique
+  feedbackBy String
   comments   String
   rating     Int      @default(1)
   createdAt  DateTime @default(now())
@@ -61,10 +61,10 @@ model Feedback {
 }
 
 model Task {
-  taskId          Int              @id @default(autoincrement())
-  crackId         Int?
+  taskId          String           @id @default(uuid())
+  crackId         String?
   description     String
-  scheduleJobId   Int
+  scheduleJobId   String
   status          TaskStatus
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
@@ -76,8 +76,8 @@ model Task {
 }
 
 model WorkLog {
-  workLogId   Int      @id @default(autoincrement())
-  taskId      Int
+  workLogId   String   @id @default(uuid())
+  taskId      String
   title       String
   description String
   createdAt   DateTime @default(now())
@@ -86,7 +86,7 @@ model WorkLog {
 }
 
 model Schedule {
-  scheduleId   Int           @id @default(autoincrement())
+  scheduleId   String        @id @default(uuid())
   scheduleName String
   scheduleType ScheduleType
   description  String?
@@ -96,11 +96,11 @@ model Schedule {
 }
 
 model ScheduleJob {
-  scheduleJobId Int       @id @default(autoincrement())
-  scheduleId    Int
+  scheduleJobId String    @id @default(uuid())
+  scheduleId    String
   runDate       DateTime
   status        JobStatus
-  buildingId    Int
+  buildingId    String
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   schedule      Schedule  @relation(fields: [scheduleId], references: [scheduleId])
@@ -109,7 +109,7 @@ model ScheduleJob {
 }
 
 model Building {
-  buildingId      Int              @id @default(autoincrement())
+  buildingId      String           @id @default(uuid())
   name            String
   description     String?
   numberFloor     Int
@@ -117,19 +117,19 @@ model Building {
   area            Area?            @relation(fields: [areaId], references: [areaId])
   buildingDetails BuildingDetail[]
   scheduleJobs    ScheduleJob[]
-  areaId          Int?
+  areaId          String?
 }
 
 model Area {
-  areaId      Int        @id @default(autoincrement())
+  areaId      String     @id @default(uuid())
   name        String
   description String?
   buildings   Building[]
 }
 
 model BuildingDetail {
-  buildingDetailId Int              @id @default(autoincrement())
-  buildingId       Int
+  buildingDetailId String           @id @default(uuid())
+  buildingId       String
   name             String
   description      String?
   areaType         AreaType
@@ -140,8 +140,8 @@ model BuildingDetail {
 }
 
 model LocationDetail {
-  locationDetailId Int            @id @default(autoincrement())
-  buildingDetailId Int
+  locationDetailId String         @id @default(uuid())
+  buildingDetailId String
   roomNumber       String?
   floorNumber      Int
   positionSide     PositionSide
@@ -151,11 +151,11 @@ model LocationDetail {
 }
 
 model CrackReport {
-  crackId          Int            @id @default(autoincrement())
-  buildingDetailId Int
+  crackId          String         @id @default(uuid())
+  buildingDetailId String
   photoUrl         String
   status           ReportStatus
-  reportedBy       Int
+  reportedBy       String
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
   crackDetails     CrackDetail[]
@@ -163,14 +163,14 @@ model CrackReport {
 }
 
 model CrackDetail {
-  crackDetailsId Int         @id @default(autoincrement())
-  crackId        Int
+  crackDetailsId String      @id @default(uuid())
+  crackId        String
   photoUrl       String
   description    String
   status         CrackStatus
   severity       Severity
-  reportedBy     Int
-  verifiedBy     Int
+  reportedBy     String
+  verifiedBy     String
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @updatedAt
   crackReport    CrackReport @relation(fields: [crackId], references: [crackId])
@@ -178,9 +178,9 @@ model CrackDetail {
 }
 
 model TaskAssignment {
-  assignmentId Int              @id @default(autoincrement())
-  taskId       Int
-  employeeId   Int
+  assignmentId String           @id @default(uuid())
+  taskId       String
+  employeeId   String
   description  String
   status       AssignmentStatus
   createdAt    DateTime         @default(now())
@@ -191,12 +191,12 @@ model TaskAssignment {
 }
 
 model Inspection {
-  inspectionId   Int              @id @default(autoincrement())
-  crackId        Int
-  inspectedBy    Int
+  inspectionId   String           @id @default(uuid())
+  crackId        String
+  inspectedBy    String
   inspectionDate DateTime
   imageUrl       String?
-  assignmentId   Int
+  assignmentId   String
   description    String?
   status         InspectionStatus
   createdAt      DateTime         @default(now())
@@ -206,7 +206,7 @@ model Inspection {
 }
 
 model Department {
-  departmentId   Int        @id @default(autoincrement())
+  departmentId   String     @id @default(uuid())
   departmentName String     @unique
   description    String?
   createdAt      DateTime   @default(now())
@@ -215,7 +215,7 @@ model Department {
 }
 
 model WorkingPosition {
-  positionId   Int            @id @default(autoincrement())
+  positionId   String         @id @default(uuid())
   positionName PositionName
   description  String?
   status       PositionStatus
@@ -223,6 +223,8 @@ model WorkingPosition {
 }
 
 enum Role {
+  Admin
+  Manager
   Resident
   Employee
 }
@@ -275,7 +277,7 @@ enum ReportStatus {
 }
 
 enum CrackStatus {
-  Desscription
+  Description
   Verified
   InProgress
   Completed
